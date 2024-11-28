@@ -1,0 +1,25 @@
+名字: 将HTML部署到GitHub页面
+
+在:
+推:
+分支:
+      - 主要的
+
+工作:
+部署:
+连续运行: Ubuntu-最新版
+步伐:
+      - 名字: 检验
+使用: 动作/签出@v3
+
+      - 名字: Install dependencies (if any)
+奔跑: npm install # 如果没有依赖项，可以删除这一步
+
+      - 名字: Build
+奔跑: echo " HTML不需要构建步骤"
+
+      - 名字: Deploy to GitHub Pages
+使用: actions/deploy-pages@v1
+随着:
+代币: ${{ secrets.GITHUB_TOKEN }}
+          folder:.
