@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>吴思莹生日快乐</title>
+    <title>黑客帝国“代码雨”特效</title>
     <style>
         * {
             margin: 0;
@@ -58,14 +58,13 @@
             // 设置文本基线为顶部
             ctx.textBaseline = 'top';
             for (let i = 0; i < columnCount; i++) {
-                const text = '生日快乐';
-                const words = text.split('');
-                for (let j = 0; j < words.length; j++) {
-                    const char = words[j];
-                    const x = i * fontSize;
-                    const y = (j + charIndex[i]) * fontSize;
-                    ctx.fillText(char, x, y);
-                }
+                // 获取指定文字
+                const text = getSpecifiedChar();
+                // 计算文字的 x、y 坐标
+                const x = i * fontSize;
+                const y = charIndex[i] * fontSize;
+                // 绘制文本
+                ctx.fillText(text, x, y);
                 // 超出画布归零
                 // 这里需要再加个判断，使之错开归零的时间点（Math.random()>0.99）
                 if (y > cvs.height && Math.random() > 0.99) {
@@ -83,7 +82,7 @@
 
         // 获取指定文字
         function getSpecifiedChar() {
-            return '生日快乐';
+            return '生''日''快''乐';
         }
     </script>
 </body>
