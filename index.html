@@ -21,18 +21,28 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
         }
 
         canvas {
-            background-color: #000;
+            background-color: transparent;
             width: 100vw;
             height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
         }
 
-       .input-container {
+     .input-container {
             background-color: rgba(255, 255, 255, 0.5);
             padding: 20px;
             border-radius: 5px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
         }
 
         input[type="password"] {
@@ -87,13 +97,15 @@
             // 设置文本基线为顶部
             ctx.textBaseline = 'top';
             for (let i = 0; i < columnCount; i++) {
-                // 获取指定文字
-                const text = getSpecifiedChar();
-                // 计算文字的 x、y 坐标
-                const x = i * fontSize;
-                const y = charIndex[i] * fontSize;
-                // 绘制文本
-                ctx.fillText(text, x, y);
+                // 获取指定文字，逐字拆分并竖着排列
+                const text = '生日快乐';
+                const words = text.split('');
+                for (let j = 0; j < words.length; j++) {
+                    const char = words[j];
+                    const x = i * fontSize;
+                    const y = (j + charIndex[i]) * fontSize;
+                    ctx.fillText(char, x, y);
+                }
                 // 超出画布归零
                 // 这里需要再加个判断，使之错开归零的时间点（Math.random()>0.99）
                 if (y > cvs.height && Math.random() > 0.99) {
