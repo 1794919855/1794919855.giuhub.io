@@ -1,96 +1,130 @@
 <!DOCTYPE html>
-<html lang="cn">
+<html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>吴思莹生日快乐</title>
-  <style>
-    body {
-      margin: 0;
-      background-image: url('jing.jpg');
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吴思莹生日快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
 
-   .input-container {
-      background-color: rgba(255, 255, 255, 0.5);
-      padding: 20px;
-      border-radius: 5px;
-    }
+        body {
+            overflow: hidden;
+            background-image: url('jing.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: none;
-      border-bottom: 1px solid #333;
-      background-color: transparent;
-      color: #333;
-      outline: none;
-    }
+        canvas {
+            background-color: #000;
+            width: 100vw;
+            height: 100vh;
+        }
 
-   .text-rain {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
+       .input-container {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 5px;
+        }
 
-   .text-rain span {
-      position: absolute;
-      font-size: 20px;
-      /* 使用线性渐变颜色 */
-      background: linear-gradient(to bottom, #ff69b4, #ffb6c1);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: textRainAnimation 5s linear infinite;
-    }
-
-    @keyframes textRainAnimation {
-      0% {
-        transform: translateY(-100%);
-      }
-
-      100% {
-        transform: translateY(100%);
-      }
-    }
-  </style>
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-bottom: 1px solid #333;
+            background-color: transparent;
+            color: #333;
+            outline: none;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="input-container">
-    <label for="password">密码：</label>
-    <input type="password" id="password">
-    <button onclick="checkPassword()">提交</button>
-  </div>
-  <div class="text-rain">
-    <span>生</span>
-    <span>日</span>
-    <span>快</span>
-    <span>乐</span>
-    <!-- 可以根据需要添加更多的文字 -->
-  </div>
+    <canvas></canvas>
+    <div class="input-container">
+        <label for="password">密码：</label>
+        <input type="password" id="password">
+        <button onclick="checkPassword()">提交</button>
+    </div>
+    <script>
+        // 要操作的画布
+        const cvs = document.querySelector('canvas');
+        // 画布上下文
+        const ctx = cvs.getContext('2d');
 
-  <script>
-    function checkPassword() {
-      const passwordInput = document.getElementById('password');
-      const enteredPassword = passwordInput.value;
-      const correctPassword = '20041225';
-      if (enteredPassword === correctPassword) {
-        alert('密码正确');
-      } else {
-        alert('密码错误');
-      }
-    }
-  </script>
+        // 初始化画布宽高
+        function init() {
+            cvs.width = window.innerWidth * devicePixelRatio;
+            cvs.height = window.innerHeight * devicePixelRatio;
+        }
+        init();
+
+        // 根据 DPR 计算字体的大小（devicePixelRatio 设备像素比）
+        const fontSize = 20 * devicePixelRatio;
+        // 设置字体、字体大小（和 CSS 设置字体一样）
+        ctx.font = `${fontSize}px "Consolas"`;
+        // 计算总列数（fontSize 相当于每列的宽度）
+        const columnCount = Math.floor(cvs.width / fontSize);
+        // 根据列数创建数组并填充为 0
+        const charIndex = new Array(columnCount).fill(0);
+
+        // 绘制代码雨
+        function draw() {
+            // 加个渐隐效果
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
+            // 设置字体颜色为粉色
+            ctx.fillStyle = '#FFC0CB';
+            // 设置文本基线为顶部
+            ctx.textBaseline = 'top';
+            for (let i = 0; i < columnCount; i++) {
+                // 获取指定文字
+                const text = getSpecifiedChar();
+                // 计算文字的 x、y 坐标
+                const x = i * fontSize;
+                const y = charIndex[i] * fontSize;
+                // 绘制文本
+                ctx.fillText(text, x, y);
+                // 超出画布归零
+                // 这里需要再加个判断，使之错开归零的时间点（Math.random()>0.99）
+                if (y > cvs.height && Math.random() > 0.99) {
+                    charIndex[i] = 0;
+                } else {
+                    charIndex[i]++;
+                }
+            }
+        }
+
+        // 开始绘制
+        draw();
+        // 每个 50 毫秒绘制一次
+        setInterval(draw, 50);
+
+        // 获取指定文字
+        function getSpecifiedChar() {
+            return '生日快乐';
+        }
+
+        function checkPassword() {
+            const passwordInput = document.getElementById('password');
+            const enteredPassword = passwordInput.value;
+            const correctPassword = '20041225';
+            if (enteredPassword === correctPassword) {
+                alert('密码正确');
+            } else {
+                alert('密码错误');
+            }
+        }
+    </script>
 </body>
 
 </html>
