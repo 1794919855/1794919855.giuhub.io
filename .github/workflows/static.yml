@@ -1,25 +1,21 @@
+---
 name: Deploy HTML to GitHub Pages
-
-在:
-推:
-分支:
-      - 主要的
-
-工作:
-部署:
-连续运行: Ubuntu-最新版
-步伐:
-      - 名字: 检验
-使用: 动作/签出@v3
-
-      - 名字:安装依赖项(如果有)
-奔跑: npm安装# 如果没有依赖项，可以删除这一步
-
-      - 名字: 建设
-奔跑: 回声" HTML不需要构建步骤"
-
-      - 名字: 部署到GitHub页面
-使用: 操作/部署-页面@v1
-随着:
-代币: ${{秘密。GITHUB_TOKEN}}
-文件夹:。
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install dependencies (if any)
+        run: npm install
+      - name: Build
+        run: echo "No build step needed for HTML"
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: ..
