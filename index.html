@@ -39,13 +39,18 @@
             // 设置文本基线为顶部
             ctx.textBaseline = 'top';
             for (let i = 0; i < columnCount; i++) {
-                // 获取随机字符
-                const text = getRandomChar(i);
+                // 获取固定字符中的字符并按要求排列
+                const text = "Happy birthday";
+                let charIndexInText = (i % text.length) + ((Math.floor(i / text.length)) * text.length);
+                if (charIndexInText >= text.length) {
+                    charIndexInText -= text.length;
+                }
+                const char = text[charIndexInText];
                 // 计算文字的 x、y 坐标
                 const x = i * fontSize;
                 const y = charIndex[i] * fontSize;
                 // 绘制文本
-                ctx.fillText(text, x, y);
+                ctx.fillText(char, x, y);
                 // 超出画布归零
                 // 这里需要再加个判断，使之错开归零的时间点（Math.random()>0.99）
                 if (y > cvs.height && Math.random() > 0.99) {
@@ -54,13 +59,6 @@
                     charIndex[i]++;
                 }
             }
-        }
-
-        // 获取固定字符“Happy birthday”中的字符
-        function getRandomChar(index) {
-            const text = "Happy birthday";
-            const charIndexInText = index % text.length;
-            return text[charIndexInText];
         }
 
         // 开始绘制
