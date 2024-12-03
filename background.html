@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<超文本标记语言>
+<html>
 
-<头>
-    <自指的字符集=“UTF八号”>
-</头>
+<head>
+    <meta charset="UTF-8">
+</head>
 
-<身体>
-    <风格>
-身体{
-            边缘: 0;
-            泛滥: 隐藏的;
+<body>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
         }
 
-帆布
+        canvas {
             position: absolute;
             top: 0;
             left: 0;
@@ -20,67 +20,67 @@
             height: 100%;
             z-index: -1;
         }
-    </风格>
-    <帆布></帆布>
-    <脚本>
+    </style>
+    <canvas></canvas>
+    <script>
         // 要操作的画布
-        const CVS= 文件。使用 queryselector(关于Canvas);
+        const cvs = document.querySelector('canvas');
         // 画布上下文
-        常数 ctx= cvs。获取上下文(二维');
+        const ctx = cvs.getContext('2d');
 
         // 初始化画布宽高
-        功能 初始化() {
-简历。宽度=窗口。内部宽度*窗口。设备像素比率;
-简历。高度=窗口。内部高度*窗口。设备像素比率;
+        function init() {
+            cvs.width = window.innerWidth * window.devicePixelRatio;
+            cvs.height = window.innerHeight * window.devicePixelRatio;
         }
-        初始化();
+        init();
 
         // 根据 DPR 计算字体的大小（devicePixelRatio 设备像素比）
-        常数 字体大小 = 20*窗口。设备像素比率;
+        const fontSize = 20 * window.devicePixelRatio;
         // 设置字体、字体大小（和 CSS 设置字体一样）
-ctx。字体 = `${字体大小}px“控制台”;
+        ctx.font = `${fontSize}px "Console"`;
         // 计算总列数（fontSize 相当于每列的宽度）
-        常数 columnCount=数学。地面(简历。宽度/ fontSize);
+        const columnCount = Math.floor(cvs.width / fontSize);
         // 根据列数创建数组并填充为 0
-        常数 查林德克斯 = 新的排列(columnCount).充满(0);
-        常数 速度 = 新的排列(columnCount).充满(字体大小);
-        为 (让 我 = 0；i < columnCounti++) {
-速度[我]+=数学。随意() * 10; // 添加一些随机速度变化
+        const charIndex = new Array(columnCount).fill(0);
+        const speeds = new Array(columnCount).fill(fontSize);
+        for (let i = 0; i < columnCount; i++) {
+            speeds[i] += Math.random() * 10; // 添加一些随机速度变化
         }
 
         // 绘制代码雨
-        功能 画() {
+        function draw() {
             // 加个渐隐效果
-ctx。填充样式 = rgba(0，0，0，0.1)';
-ctx。fillRect(0, 0，简历。宽度，简历。高度);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
             // 设置随机的字体颜色
-            const random颜色 = `#${数学的。楼层(Math的。Random的() * 16777215).关于ToString(16)}`;
-CTX。FillStylerandomColor;
+            const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+            ctx.fillStyle = randomColor;
             // 设置文本基线为顶部
-CTX。textbaseline = “顶部”;
-            为 (让 我 = 0；i < columnCounti++) {
+            ctx.textBaseline = 'top';
+            for (let i = 0; i < columnCount; i++) {
                 // 竖直排列的“生日快乐”
-                常数 文本 = ['生', '日', '快', '乐'];
-                为 (让 j = 0；j <文本。长度；j++) {
-                    常数 x= I * FontSize + Math。随意() * 10 - 5; // 添加一些随机偏移
-                    常数 y = (查林德克斯[我]+ j)* fontSize *速度[我];
-ctx。填充文本(文本[j]，x，y);
+                const texts = ['生', '日', '快', '乐'];
+                for (let j = 0; j < texts.length; j++) {
+                    const x = i * fontSize + Math.random() * 10 - 5; // 添加一些随机偏移
+                    const y = (charIndex[i] + j) * fontSize * speeds[i];
+                    ctx.fillText(texts[j], x, y);
                 }
                 // 超出画布归零
                 // 这里需要再加个判断，使之错开归零的时间点（Math.random()>0.99）
-                如果 ((查林德克斯[我]+文本。长度)* fontSize *速度[我]>简历。高度&&数学。随意() > 0.99) {
-查林德克斯[我] = 0;
-                } 其他 {
-查林德克斯[我]++;
+                if ((charIndex[i] + texts.length) * fontSize * speeds[i] > cvs.height && Math.random() > 0.99) {
+                    charIndex[i] = 0;
+                } else {
+                    charIndex[i]++;
                 }
             }
         }
 
         // 开始绘制
-        画();
+        draw();
         // 每个 30 毫秒绘制一次（比原来的 50 毫秒更快）
-        设置间隔(画画，30);
-    </脚本>
-</身体>
+        setInterval(draw, 30);
+    </script>
+</body>
 
-</超文本标记语言>
+</html>
