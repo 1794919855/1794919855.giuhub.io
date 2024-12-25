@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="js/光标.js" defer></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #main {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        #video1 {
+            width: 100%;
+            height: 100%;
+        }
+
+    .hidden {
+            display: none;
+        }
+
+        #login-form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var verifyButton = document.getElementById("login-button");
+            var passwordInput = document.getElementsByName("pwd")[0];
+            verifyButton.addEventListener("click", function (event) {
+                event.preventDefault(); // 阻止表单默认提交行为
+                var password = passwordInput.value;
+                if (password === "1225") {
+                    window.location.href = "index1.html";
+                }
+                else {
+                    alert("密码错了哟");
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <video id="video1" muted="muted" autoplay="autoplay" loop="loop" src="your_video.mp4">
+    </video>
+
+    <div class="htmleaf-container">
+        <div class="wrapper">
+            <div class="container">
+                <h1>生日快乐</h1>
+                <form id="login-form" class="form">
+                    <input id="userName" name="userName" type="text" placeholder="xx" value="吴思莹">
+                    <input id="pwd" name="pwd" type="password" placeholder="密码">
+                    <button type="button" id="login-button">进入</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
